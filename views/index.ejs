@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <canvas id="qr-code"></canvas>
+
+
+    <p>
+        self id: <span id="self-id"></span><br>
+        owner id: <span id="owner-id"></span><br>
+
+    </p>
+    <button id="btn">Go</button>
+
+    <button id="btn-move">move</button>
+
+
+    <div id="game">
+        <div id="ball"></div>
+    </div>
+
+
+    <script src="/jquery/dist/jquery.min.js"></script>
+    <script src="/qr-js/qr.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+
+    </script>
+
+    <script>
+        function cleanURL(url) {
+            return(url.replace(/\?.*$/, "").replace(/\/[^\/]*$/, "") + "/");
+        }
+
+
+        $(document).ready(function() {
+
+
+            var socket = io.connect('http://localhost:3000');
+            socket.on('news', function (data) {
+                console.log(data);
+                $('#self-id').text(data.soId);
+                socket.emit('my other event', { my: 'data' });
+            });
+
+
+            var path = window.location.hash;
+            var room = '/' + path;
+            console.log('room ' + room);
+
+            if(!path) {
+                socket.emit('get owner id');
+            } else {
+                socket.emit('visitor join', {room: room});
+            }
+
+            socket.on('owner id', function(data) {
+                console.log('owner id');
+                console.log('owner id === ', data);
+
+//                var url = 'http://localhost:3000' + data.ownerId;
+                var url = 'http://oocmic.com';
+
+
+                qr.canvas({
+                    canvas: document.getElementById('qr-code'),
+                    value: url
+                });
+
+                $('#owner-id').text(data.ownerId);
+
+                console.log(url);
+            });
+
+            socket.on('visitor joined', function(data) {
+                console.log('room: ' + data.room);
+                console.log('clients: ' + data.clients);
+
+            });
+
+            socket.on('msg', function(msg) {
+               console.log('msg: ' + msg);
+            });
+
+
+            $('#btn').click(function() {
+                socket.emit('go', {room: room});
+            });
+
+            var speed = (window.innerWidth + 80 * 2) / 250;
+            console.log('speed, ' + speed);
+
+            var ball = {
+                speed: speed,
+                x: -80,
+                y: 0,
+                radius: 40
+            };
+
+            function moveBall() {
+                if(ball.x > window.innerWidth + ball.radius * 2 * 2) {
+                    clearInterval(ball.timer);
+                    clearInterval(ball.timerLog);
+
+                }
+
+                ball.x += ball.speed;
+                ball.y += ball.speed;
+            }
+
+            function renderBall() {
+//                console.log('renderBall');
+//                console.log('ball', ball);
+                $('#ball').css({
+                    "left" : ball.x + ball.speed,
+//                    "top"  : ball.y + ball.speed
+                });
+            }
+
+            function render() {
+//                console.log('render');
+                moveBall();
+                renderBall();
+//                window.requestAnimationFrame(render);
+            }
+
+            var i = 0;
+
+            $('#btn-move').click(function() {
+                ball.timer = setInterval(render, 1000/50);
+                ball.timerLog = setInterval(function() {
+                    console.log('secend used ', ++i);
+                }, 1000);
+
+                //view rendering
+//                window.requestAnimationFrame(render);
+
+                console.log('btn-move');
+            });
+
+
+        });
+
+    </script>
+  </body>
+</html>

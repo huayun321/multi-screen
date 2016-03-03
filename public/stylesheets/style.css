@@ -1,0 +1,27 @@
+body {
+  padding: 0;
+    margin: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+
+#game {
+    width: 100%;
+    background-color: #444444;
+    position: relative;
+    height: 100px;
+}
+
+#ball {
+    background-color: #fbb;
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: -80px;
+    top: 10px;
+    border-radius: 40px;
+}
