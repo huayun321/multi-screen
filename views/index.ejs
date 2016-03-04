@@ -35,13 +35,7 @@
     </script>
 
     <script>
-        function cleanURL(url) {
-            return(url.replace(/\?.*$/, "").replace(/\/[^\/]*$/, "") + "/");
-        }
-
-
         $(document).ready(function() {
-
 
             var socket = io.connect(serverUrl);
             socket.on('news', function (data) {
@@ -49,7 +43,6 @@
                 $('#self-id').text(data.soId);
                 socket.emit('my other event', { my: 'data' });
             });
-
 
             var path = window.location.hash;
             var room = '/' + path;
@@ -62,36 +55,25 @@
             }
 
             socket.on('owner id', function(data) {
-                console.log('owner id');
-                console.log('owner id === ', data);
-
-//                var url = 'http://localhost:3000' + data.ownerId;
                 var url = serverUrl + data.ownerId;
-
-
                 qr.canvas({
                     canvas: document.getElementById('qr-code'),
                     value: url
                 });
 
                 $('#owner-id').text(data.ownerId);
-
                 console.log(url);
             });
 
             socket.on('visitor joined', function(data) {
                 console.log('room: ' + data.room);
                 console.log('clients: ' + data.clients);
-
             });
 
             socket.on('msg', function(msg) {
-
                console.log('msg: ' + msg);
-                ball.speed = (window.innerWidth + 80 * 0) / 250;
                 setTimeout(go, msg * 1000);
             });
-
 
             $('#btn').click(function() {
                 socket.emit('go', {room: room});
@@ -116,13 +98,11 @@
                 }
 
                 ball.x += ball.speed;
-                ball.y += ball.speed;
             }
 
             function renderBall() {
                 $('#ball').css({
                     "left" : ball.x + ball.speed,
-//                    "top"  : ball.y + ball.speed
                 });
             }
 
@@ -133,7 +113,6 @@
             }
 
             function go() {
-                console.log('go');
                 ball.timer = setInterval(render, 1000/50);
                 var i = 0;
                 ball.timerLog = setInterval(function() {
