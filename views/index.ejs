@@ -32,6 +32,8 @@
 
     <script>
 
+        var serverUrl = <%- JSON.stringify(serverUrl) %>;
+
     </script>
 
     <script>
@@ -66,7 +68,7 @@
                 console.log('owner id === ', data);
 
 //                var url = 'http://localhost:3000' + data.ownerId;
-                var url = 'http://oocmic.com';
+                var url = serverUrl;
 
 
                 qr.canvas({
