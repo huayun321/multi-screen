@@ -59,8 +59,12 @@ io.on('connection', function(socket) {
 
             for(var i=0; i<clients.length; i++) {
                 var c = clients[i];
+                if(socket.id == c) {
+                    continue;
+                }
+                console.log('go for ', c);
                 //io.sockets.connected[c].emit('msg', i);
-                io.to(c).emit('msg', i);
+                io.to(c).emit('msg', i * 5);
             }
         });
     })

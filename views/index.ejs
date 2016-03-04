@@ -89,15 +89,19 @@
             });
 
             socket.on('msg', function(msg) {
+
                console.log('msg: ' + msg);
+                ball.speed = (window.innerWidth + 80 * 0) / 250;
+                setTimeout(go, msg * 1000);
             });
 
 
             $('#btn').click(function() {
                 socket.emit('go', {room: room});
+                go();
             });
 
-            var speed = (window.innerWidth + 80 * 2) / 250;
+            var speed = (window.innerWidth + 80 * 0) / 250;
             console.log('speed, ' + speed);
 
             var ball = {
@@ -119,8 +123,6 @@
             }
 
             function renderBall() {
-//                console.log('renderBall');
-//                console.log('ball', ball);
                 $('#ball').css({
                     "left" : ball.x + ball.speed,
 //                    "top"  : ball.y + ball.speed
@@ -128,23 +130,23 @@
             }
 
             function render() {
-//                console.log('render');
+                console.log('render');
                 moveBall();
                 renderBall();
-//                window.requestAnimationFrame(render);
             }
 
-            var i = 0;
-
-            $('#btn-move').click(function() {
+            function go() {
+                console.log('go');
                 ball.timer = setInterval(render, 1000/50);
+                var i = 0;
                 ball.timerLog = setInterval(function() {
                     console.log('secend used ', ++i);
                 }, 1000);
+            }
 
-                //view rendering
-//                window.requestAnimationFrame(render);
 
+            $('#btn-move').click(function() {
+//                go();
                 console.log('btn-move');
             });
 

@@ -1,3 +1,5 @@
 {
   "serverUrl": "http://sensoro-mocha.chinacloudapp.cn:27002"
+//  "serverUrl": "http://localhost:27002"
+
 }
