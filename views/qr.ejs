@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+      <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <canvas id="qr-code"></canvas>
+
+
+    <script src="/jquery/dist/jquery.min.js"></script>
+    <script src="/qr-js/qr.min.js"></script>
+
+    <script>
+
+        var serverUrl = <%- JSON.stringify(serverUrl) %>;
+
+    </script>
+
+    <script>
+
+        $(document).ready(function() {
+            var url = serverUrl;
+
+            qr.canvas({
+                canvas: document.getElementById('qr-code'),
+                value: url
+            });
+        });
+
+    </script>
+  </body>
+</html>
