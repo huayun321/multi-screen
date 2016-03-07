@@ -93,6 +93,8 @@
                 if(ball.x > window.innerWidth + ball.radius) {
                     clearInterval(ball.timer);
                     clearInterval(ball.timerLog);
+                    ball.x = -85;
+                    return;
 
                 }
 
